@@ -84,20 +84,27 @@ async function run() {
         })
 
         // my confirm orders
-        app.post("/myOrders/:email", async(req, res) => {
+        app.get("/myOrders/:email", async(req, res) => {
             const email = req.params.email;
-            const result = orderCollection.find(email).toArray();
-            res.send(result);
+            const result = await orderCollection.find({email}).toArray();
+           res.send(result);
         })
 
 
         // delete Order
         app.delete("/cancel/:id", async(req, res) => {
             const id = req.params.id;
-            const result = orderCollection.deleteOne({_id:ObjectId(id)});
+            const result = await orderCollection.deleteOne({_id:ObjectId(id)});
             res.send(result);
         })
 
+
+        // all Services Delete
+        app.delete("/cicleDelete/:id", async(req, res) => {
+            const id = req.params.id;
+            const result = await servicesCollection.deleteOne({_id:ObjectId(id)});
+            res.send(result);
+        })
 
         // admin email check
         app.get('/users/:email', async (req, res) => {
